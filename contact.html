@@ -10,7 +10,7 @@
 <body data-page="contact">
 <div class="topline"><span>● <span data-i18n="available">Disponible pour vos projets</span></span><span>SOUSSE, TUNISIE</span></div>
 <header class="header">
-<a class="brand" href="index.html"><img src='https://nizarforage.com/wp-content/uploads/2021/11/logo-blanc@2x-2.png' alt='Nizar Forage logo' class='logo-img'></a>
+<a class="brand" href="index.html"><img src="logo.png" alt="Nizar Forage logo" class="logo-img"></a>
 <nav class="nav">
 <a href="index.html" data-i18n="home">Accueil</a>
 <a href="services.html" data-i18n="services">Services</a>
@@ -44,7 +44,7 @@
 
 <footer class="footer">
 <div class="footer-grid">
-<div><div class="footer-logo"><img src='https://nizarforage.com/wp-content/uploads/2021/11/logo-blanc@2x-2.png' alt='Nizar Forage logo' class='logo-img'></div><p data-i18n="footerDesc">Solutions professionnelles de recherche et forage d'eau.</p></div>
+<div><div class="footer-logo"><img src="logo.png" alt="Nizar Forage logo" class="logo-img"></div><p data-i18n="footerDesc">Solutions professionnelles de recherche et forage d'eau.</p></div>
 <div><h4 data-i18n="explore">Explorer</h4><a href="services.html">Services</a><a href="projects.html">Projets</a><a href="about.html">À propos</a></div>
 <div><h4 data-i18n="contact">Contact</h4><p>+216 73 203 342</p><p>contact@nizarforage.com</p><p>Sousse, Tunisie</p></div>
 </div>
@@ -58,5 +58,39 @@
 </aside>
 <div class="toast" id="toast"></div>
 <script src="script.js"></script>
+<div id="nizar-google-login" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:white;color:#222;padding:16px;border-radius:12px;box-shadow:0 4px 20px #0003;font-family:Arial;max-width:300px">
+  <div style="font-weight:bold;margin-bottom:10px">NIZAR-FORAGE Client Access</div>
+  <div id="googleSignInButton"></div>
+  <div id="googleLoginStatus" style="font-size:13px;margin-top:10px"></div>
+</div>
+<script src="https://accounts.google.com/gsi/client" async defer onload="initializeNizarGoogle()"></script>
+<script>
+function initializeNizarGoogle() {
+  google.accounts.id.initialize({
+    client_id: "534752586715-3gjb2pci7erpgvq4ojogou0mef7emg3n.apps.googleusercontent.com",
+    callback: handleNizarGoogleLogin
+  });
+  google.accounts.id.renderButton(
+    document.getElementById("googleSignInButton"),
+    { theme: "outline", size: "large", text: "signin_with", shape: "pill" }
+  );
+}
+function handleNizarGoogleLogin(response) {
+  try {
+    let part = response.credential.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    while (part.length % 4) part += "=";
+    const user = JSON.parse(decodeURIComponent(
+      atob(part).split("").map(c => "%" + c.charCodeAt(0).toString(16).padStart(2,"0")).join("")
+    ));
+    document.getElementById("googleLoginStatus").textContent =
+      "Welcome, " + (user.name || "Client") + " (" + (user.email || "") + ")";
+  } catch(e) {
+    document.getElementById("googleLoginStatus").textContent = "Sign-in response received.";
+  }
+}
+</script>
 </body>
 </html>
+
+
+
